@@ -1,0 +1,28 @@
+{
+    "name": "rubengomez/cxf",
+    "description": "CXF library allows to connect your Laravel App to CXF 2\n\n",
+    "version": "0.0.1",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Ruben Gomez",
+            "email": "ruben@mints.cloud"
+        },
+        {
+            "name": "Luis Hesiquio",
+            "email": "lhernandez@mints.cloud"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Cxf\\": "src/"
+        }
+    },
+    "require": {
+        "ext-json": "*",
+        "doctrine/inflector": "^2.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "predis/predis": "^2.2"
+    },
+    "license": "MIT"
+}
