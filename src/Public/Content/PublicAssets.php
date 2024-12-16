@@ -1,6 +1,6 @@
 <?php
 
-namespace Cxf\CPublic\Content;
+namespace Cxf\Public\Content;
 
 use Cxf\CxfHelper;
 

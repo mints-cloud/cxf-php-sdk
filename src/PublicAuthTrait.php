@@ -4,10 +4,10 @@ namespace Cxf;
 
 trait PublicAuthTrait
 {
-    public cPublic $cxfPublic;
+    public PublicClient $cxfPublic;
 
     public function initializePublicClient($host = null, $apiKey = null, $sessionToken = null, $refreshToken = null, $debug = false, $timeouts = []): void
     {
-        $this->cxfPublic = new cPublic($host, $apiKey, $sessionToken, $refreshToken, $debug, $timeouts);
+        $this->cxfPublic = new PublicClient($host, $apiKey, $sessionToken, $refreshToken, $debug, $timeouts);
     }
 }

@@ -4,7 +4,7 @@ namespace Cxf;
 
 trait UserAuthTrait
 {
-    public User $cxfUser;
+    public UserClient $cxfUser;
 
     public function initializeUserClient($host = null, $apiKey = null, $sessionToken = null, $refreshToken = null, $debug = false, $timeouts = []): void
     {
@@ -15,7 +15,7 @@ trait UserAuthTrait
         if (isset($_COOKIE['cxf_user_refresh_token'])) {
             $refreshToken = $_COOKIE['cxf_user_refresh_token'];
         }
-        $this->cxfUser = new User($host, $apiKey, $sessionToken, $refreshToken, $debug, $timeouts);
+        $this->cxfUser = new UserClient($host, $apiKey, $sessionToken, $refreshToken, $debug, $timeouts);
     }
 
     /**

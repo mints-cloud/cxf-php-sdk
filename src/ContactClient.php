@@ -6,7 +6,7 @@ use Cxf\Contact\Config\ContactConfig;
 use Cxf\Contact\Content\ContactContent;
 use Cxf\Contact\Ecommerce\ContactEcommerce;
 
-class Contact
+class ContactClient
 {
     use ContactConfig, ContactContent, ContactEcommerce;
     public Client $client;

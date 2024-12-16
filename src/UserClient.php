@@ -10,7 +10,7 @@ use Cxf\User\Helpers\Helpers;
 use Cxf\User\Marketing\Marketing;
 use Cxf\User\Profile\Profile;
 
-class User
+class UserClient
 {
     use Profile,
         Marketing,

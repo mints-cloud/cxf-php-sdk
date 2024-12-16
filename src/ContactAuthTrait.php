@@ -4,7 +4,7 @@ namespace Cxf;
 
 trait ContactAuthTrait
 {
-    public Contact $cxfContact;
+    public ContactClient $cxfContact;
     public string $contactToken;
 
     public function initializeContactClient($host = null, $apiKey = null, $sessionToken = null, $refreshToken = null, $debug = false, $timeouts = []): void
@@ -18,7 +18,7 @@ trait ContactAuthTrait
             $refreshToken = $_COOKIE['cxf_contact_refresh_token'];
         }
 
-        $this->cxfContact = new Contact($host, $apiKey, $sessionToken, $refreshToken, $debug, $timeouts);
+        $this->cxfContact = new ContactClient($host, $apiKey, $sessionToken, $refreshToken, $debug, $timeouts);
     }
 
     /**

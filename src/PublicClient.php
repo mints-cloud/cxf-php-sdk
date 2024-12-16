@@ -2,9 +2,9 @@
 
 namespace Cxf;
 
-use Cxf\CPublic\Content\PublicContent;
+use Cxf\Public\Content\PublicContent;
 
-class cPublic
+class PublicClient
 {
     use PublicContent;
 
