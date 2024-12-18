@@ -37,8 +37,6 @@ class CxfHelper
         if (is_string($data)) {
             $data = json_decode($data, true);
         }
-        return array_map('strval', array_change_key_case($data, CASE_LOWER));
+        return $data;
     }
-
-
 }
