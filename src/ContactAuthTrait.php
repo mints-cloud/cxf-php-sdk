@@ -10,8 +10,8 @@ trait ContactAuthTrait
     public function initializeContactClient($host = null, $apiKey = null, $sessionToken = null, $refreshToken = null, $debug = false, $timeouts = []): void
     {
         // Check if cxf_session_token cookie exists, then set session token from cookie
-        if (isset($_COOKIE['cxf_contact_session_token'])) {
-            $sessionToken = $_COOKIE['cxf_contact_session_token'];
+        if (isset($_COOKIE['cxf_contact_access_token'])) {
+            $sessionToken = $_COOKIE['cxf_contact_access_token'];
         }
 
         if (isset($_COOKIE['cxf_contact_refresh_token'])) {
@@ -36,7 +36,7 @@ trait ContactAuthTrait
             $this->cxfContact->client->setSessionToken($response['data']['access_token']);
             $this->cxfContact->client->setRefreshToken($response['data']['refresh_token']);
 
-            setcookie('cxf_contact_session_token', $response['data']['access_token'], time() + 86400, '/');
+            setcookie('cxf_contact_access_token', $response['data']['access_token'], time() + 86400, '/');
             setcookie('cxf_contact_refresh_token', $response['data']['refresh_token'], time() + 86400, '/');
         }
     }
@@ -51,7 +51,7 @@ trait ContactAuthTrait
             $sessionToken = $response['data']['session_token'];
             $idToken = $response['data']['contact']['contact_token'] ? $response['data']['contact']['contact_token'] : $response['data']['contact']['id_token'];
             // Set a permanent cookie with the session token
-            setcookie('cxf_contact_session_token', $sessionToken, 0, '/', '', true, true);
+            setcookie('cxf_contact_access_token', $sessionToken, 0, '/', '', true, true);
             setcookie('cxf_contact_id', $idToken, 0, '/', '', true, true);
             $this->contactToken = $idToken;
             if ($redirectInError) {
@@ -72,7 +72,7 @@ trait ContactAuthTrait
         $this->cxfContact->logout();
         // Delete session token and keep the contact token id
         // Never delete the cxf_contact_id cookie to avoid the creation of ghosts
-        setcookie('cxf_contact_session_token', '', time() - 3600, '/', '', true, true);
+        setcookie('cxf_contact_access_token', '', time() - 3600, '/', '', true, true);
         $this->contactToken = null;
     }
 
@@ -85,7 +85,7 @@ trait ContactAuthTrait
         } catch (Exception $e) {
             // Handle the client Unauthorized error
             // if cxf response is negative delete the session cookie
-            setcookie('cxf_contact_session_token', '', time() - 3600, '/', '', true, true);
+            setcookie('cxf_contact_access_token', '', time() - 3600, '/', '', true, true);
             $status = false;
         }
 

@@ -314,10 +314,10 @@ class Client
             // verificamos si el scope es user o contact
 
             if ($this->scope === 'user') {
-                setcookie('cxf_user_session_token', $headers['Access-Token'][0], time() + 86400, '/');
+                setcookie('cxf_user_access_token', $headers['Access-Token'][0], time() + 86400, '/');
                 setcookie('cxf_user_refresh_token', $headers['Refresh-Token'][0], time() + 86400, '/');
             } else {
-                setcookie('cxf_contact_session_token', $headers['Access-Token'][0], time() + 86400, '/');
+                setcookie('cxf_contact_access_token', $headers['Access-Token'][0], time() + 86400, '/');
                 setcookie('cxf_contact_refresh_token', $headers['Refresh-Token'][0], time() + 86400, '/');
             }
         }
