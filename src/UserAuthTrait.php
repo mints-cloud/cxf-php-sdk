@@ -9,8 +9,8 @@ trait UserAuthTrait
     public function initializeUserClient($host = null, $apiKey = null, $sessionToken = null, $refreshToken = null, $debug = false, $timeouts = []): void
     {
         // Check if cxf_session_token cookie exists, then set session token from cookie
-        if (isset($_COOKIE['cxf_user_session_token'])) {
-            $sessionToken = $_COOKIE['cxf_user_session_token'];
+        if (isset($_COOKIE['cxf_user_access_token'])) {
+            $sessionToken = $_COOKIE['cxf_user_access_token'];
         }
         if (isset($_COOKIE['cxf_user_refresh_token'])) {
             $refreshToken = $_COOKIE['cxf_user_refresh_token'];
@@ -34,7 +34,7 @@ trait UserAuthTrait
             $this->cxfUser->client->setSessionToken($response['data']['access_token']);
             $this->cxfUser->client->setRefreshToken($response['data']['refresh_token']);
 
-            setcookie('cxf_user_session_token', $response['data']['access_token'], time() + 86400, '/');
+            setcookie('cxf_user_access_token', $response['data']['access_token'], time() + 86400, '/');
             setcookie('cxf_user_refresh_token', $response['data']['refresh_token'], time() + 86400, '/');
         }
     }
@@ -44,8 +44,8 @@ trait UserAuthTrait
      */
     public function cxfUserLogout(): void
     {
-        // Unset the cookie called cxf_user_session_token
-        setcookie('cxf_user_session_token', '', time() - 3600, '/');
+        // Unset the cookie called cxf_user_access_token
+        setcookie('cxf_user_access_token', '', time() - 3600, '/');
         // Unset the cookie called cxf_user_refresh_token
         setcookie('cxf_user_refresh_token', '', time() - 3600, '/');
     }
@@ -60,7 +60,7 @@ trait UserAuthTrait
 
         if (isset($response['data']['access_token']) && isset($response['data']['refresh_token'])) {
             $this->cxfUser->client->setSessionToken($response['data']['access_token']);
-            setcookie('cxf_user_session_token', $response['data']['access_token'], time() + 86400, '/');
+            setcookie('cxf_user_access_token', $response['data']['access_token'], time() + 86400, '/');
 
             $this->cxfUser->client->setRefreshToken($response['data']['refresh_token']);
             setcookie('cxf_user_refresh_token', $response['data']['refresh_token'], time() + 86400, '/');
@@ -73,7 +73,7 @@ trait UserAuthTrait
      */
     public function cxfUserSignedIn(): bool
     {
-        // Check if cxf_user_session_token cookie exists
-        return isset($_COOKIE['cxf_user_session_token']);
+        // Check if cxf_user_access_token cookie exists
+        return isset($_COOKIE['cxf_user_access_token']);
     }
 }
