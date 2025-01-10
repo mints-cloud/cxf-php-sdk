@@ -63,19 +63,18 @@ class Client
             $uri = http_build_query($options);
         }
 
-        $fullUrl = $this->host . $baseUrl . $url . (isset($uri) ? "?{$uri}" : "");
-        // Catch the exception if the file does not exist
-//        try {
-//            // read cxf_config.yml from root directory, and parse it
-//            $config = Yaml::parse(file_get_contents(realpath(__DIR__ . '/../') . "/cxf_config.yml"));
-//        } catch (\Exception $e) {
-//            $config = null;
-//        }
+        $fullUrl = $this->host . $baseUrl . $url;
+
+        // if url end with /query merge options with data
+        if (substr($fullUrl, -6) === '/query') {
+            $data = array_merge($data, $options);
+        }
 
         $resultFromCache = false;
         $response = null;
 
         if ($action === 'get') {
+            $fullUrl = $fullUrl . (isset($uri) ? "?{$uri}" : "");
             $urlNeedCache = false;
 
             if (isset($config) && $config['redis_cache']['use_cache']) {

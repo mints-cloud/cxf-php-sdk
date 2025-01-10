@@ -7,5 +7,7 @@ trait CustomerData
         Contacts,
         Segments,
         Workflows,
-        WorkFlowSteps;
+        WorkFlowSteps,
+        EventTemplates,
+        Events;
 }
