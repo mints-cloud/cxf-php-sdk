@@ -8,7 +8,9 @@ use Cxf\User\CustomerData\CustomerData;
 use Cxf\User\Ecommerce\Ecommerce;
 use Cxf\User\Helpers\Helpers;
 use Cxf\User\Marketing\Marketing;
+use Cxf\User\Ownership\Ownership;
 use Cxf\User\Profile\Profile;
+use Cxf\User\Users\Users;
 
 class UserClient
 {
@@ -18,7 +20,9 @@ class UserClient
         Content,
         CustomerData,
         Ecommerce,
-        Helpers;
+        Helpers,
+        Ownership,
+        Users;
     public Client $client;
 
     /**

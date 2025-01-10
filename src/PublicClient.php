@@ -2,11 +2,13 @@
 
 namespace Cxf;
 
+use Cxf\Public\Config\PublicConfig;
 use Cxf\Public\Content\PublicContent;
 
 class PublicClient
 {
     use PublicContent;
+    use PublicConfig;
 
     public Client $client;
 

@@ -3,9 +3,9 @@ namespace Cxf\User\Content;
 use Cxf\CxfHelper;
 trait ContentTemplates
 {
-    public function getContentTemplates($options = null)
+    public function getContentTemplates($options = null, $usePost = true)
     {
-        return $this->client->raw('get', '/content/templates', $options);
+        return CxfHelper::getQueryResults($this->client, '/content/templates', $options, $usePost);
     }
 
     public function getContentTemplate($id, $options = null)
