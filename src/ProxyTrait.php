@@ -48,6 +48,7 @@ trait ProxyTrait
 
         $data = $request->input();
         if (empty($data)) $data = null;
+        if ($request->method() == 'GET') $data = null;
 
         $options = [
             'headers' => $headers,
