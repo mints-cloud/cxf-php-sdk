@@ -44,7 +44,7 @@ trait Taxonomies
      * @param bool $usePost
      * @return mixed
      */
-    public function getTaxonomies(?array $options = null, bool $usePost = true)
+    public function getTaxonomies(?array $options = [], bool $usePost = true)
     {
         return CxfHelper::getQueryResults($this->client, '/config/taxonomies', $options, $usePost);
     }
@@ -52,13 +52,13 @@ trait Taxonomies
     /**
      * Get taxonomy.
      *
-     * @param int $id
+     * @param string $id
      * @param array|null $options
      * @return mixed
      */
-    public function getTaxonomy(int $id, ?array $options = null)
+    public function getTaxonomy(string $idOrSlug, ?array $options = [])
     {
-        return $this->client->raw('get', "/config/taxonomies/{$id}", $options);
+        return $this->client->raw('get', "/config/taxonomies/{$idOrSlug}", $options);
     }
 
     /**
@@ -68,7 +68,7 @@ trait Taxonomies
      * @param array|null $options
      * @return mixed
      */
-    public function createTaxonomy(array $data, ?array $options = null)
+    public function createTaxonomy(array $data, ?array $options = [])
     {
         return $this->client->raw('post', '/config/taxonomies', $options, $this->dataTransform($data));
     }
@@ -76,17 +76,17 @@ trait Taxonomies
     /**
      * Update taxonomy.
      *
-     * @param int $id
+     * @param string $id
      * @param array $data
      * @param array|null $options
      * @return mixed
      */
-    public function updateTaxonomy(int $id, array $data, ?array $options = null)
+    public function updateTaxonomy(string $id, array $data, ?array $options = [])
     {
         return $this->client->raw('put', "/config/taxonomies/{$id}", $options, $this->dataTransform($data));
     }
 
-    public function deleteTaxonomy(int $id, ?array $options = null)
+    public function deleteTaxonomy(string $id, ?array $options = [])
     {
         return $this->client->raw('delete', "/config/taxonomies/{$id}", $options);
     }

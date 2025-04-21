@@ -22,7 +22,7 @@ trait Segments {
    * $options = ['object_type' => 'contacts'];
    * $data = $cxfUser->getSegmentsAttributes($options);
    */
-  public function getSegmentsAttributes($options = null) {
+  public function getSegmentsAttributes($options = []) {
     return $this->client->raw('get', '/customer-data/segments/attributes', $options);
   }
 
@@ -67,7 +67,7 @@ trait Segments {
    * $options = ['fields' => 'id', 'sort' => '-id'];
    * $data = $cxfUser->getSegments($options);
    */
-  public function getSegments($options = null) {
+  public function getSegments($options = []) {
     return $this->client->raw('get', '/customer-data/segments', $options);
   }
 
@@ -85,7 +85,7 @@ trait Segments {
    * $options = ['fields' => 'id, title'];
    * $data = $cxfUser->getSegment(1, $options);
    */
-  public function getSegment($id, $options = null) {
+  public function getSegment($id, $options = []) {
     return $this->client->raw('get', "/customer-data/segments/{$id}", $options);
   }
 

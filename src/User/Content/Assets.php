@@ -26,7 +26,7 @@ trait Assets
      * $options = ['fields' => 'id, title'];
      * $data = $cxfUser->getAssets($options, true);
      */
-    public function getAssets($options = null, $use_post = true)
+    public function getAssets($options = [], $use_post = true)
     {
         return CxfHelper::getQueryResults($this->client, '/content/assets', $options, $use_post);
     }
@@ -46,7 +46,7 @@ trait Assets
      * $options = ['fields' => 'id, title'];
      * $data = $cxfUser->getAsset(1, $options);
      */
-    public function getAsset($id, $options = null)
+    public function getAsset($id, $options = [])
     {
         return $this->client->raw('get', "/content/assets/{$id}", $options);
     }
@@ -105,22 +105,22 @@ trait Assets
         return $this->client->raw('delete', "/content/assets/{$id}");
     }
 
-    public function pasteItemsAssets($data, $options = null)
+    public function pasteItemsAssets($data, $options = [])
     {
         return $this->client->raw('post', '/assets/paste', $options, $this->dataTransform($data));
     }
 
-    public function getLinkInfoAssets($options = null)
+    public function getLinkInfoAssets($options = [])
     {
         return $this->client->raw('get', '/assets/link-info', $options);
     }
 
-    public function sendToTrashAssets($data, $options = null)
+    public function sendToTrashAssets($data, $options = [])
     {
         return $this->client->raw('post', '/assets/send-to-trash', $options, $this->dataTransform($data));
     }
 
-    public function usageAssets($id, $options = null)
+    public function usageAssets($id, $options = [])
     {
         return $this->client->raw('get', "/assets/{$id}/usage", $options);
     }

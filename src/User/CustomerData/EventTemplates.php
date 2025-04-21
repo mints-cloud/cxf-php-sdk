@@ -29,7 +29,7 @@ trait EventTemplates {
    * ];
    * $data = $cxfUser->getEventTemplates($options, true);
    */
-  public function getEventTemplates($options = null, $usePost = true) {
+  public function getEventTemplates($options = [], $usePost = true) {
     return CxfHelper::getQueryResults($this->client,'/customer-data/utilities/event-templates/', $options, $usePost);
   }
 
@@ -51,7 +51,7 @@ trait EventTemplates {
    * ];
    * $data = $cxfUser->getEventTemplate(5, $options);
    */
-  public function getEventTemplate($id, $options = null) {
+  public function getEventTemplate($id, $options = []) {
     return $this->client->raw('get', "/customer-data/utilities/event-templates/{$id}", $options);
   }
 
@@ -71,7 +71,7 @@ trait EventTemplates {
    * ];
    * $data = $cxfUser->createEventTemplate($data);
    */
-  public function createEventTemplate($data, $options = null) {
+  public function createEventTemplate($data, $options = []) {
     return $this->client->raw('post', '/customer-data/utilities/event-templates/', $options, $this->dataTransform($data));
   }
 
@@ -90,7 +90,7 @@ trait EventTemplates {
    * ];
    * $data = $cxfUser->updateEventTemplate(65, $data);
    */
-  public function updateEventTemplate($id, $data, $options = null) {
+  public function updateEventTemplate($id, $data, $options = []) {
     return $this->client->raw('put', "/customer-data/utilities/event-templates/{$id}", $options, $this->dataTransform($data));
   }
 
@@ -109,7 +109,7 @@ trait EventTemplates {
     return $this->client->raw('delete', "/customer-data/utilities/event-templates/{$id}");
   }
 
-  public function triggerEvent($templateSlug, $data, $options = null) {
+  public function triggerEvent($templateSlug, $data, $options = []) {
     return $this->client->raw('post', "/customer-data/utilities/event-templates/{$templateSlug}/trigger", $options, $this->dataTransform($data));
   }
 }

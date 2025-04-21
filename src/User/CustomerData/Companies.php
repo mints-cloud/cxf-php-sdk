@@ -35,7 +35,7 @@ trait Companies {
    * $options = ['fields' => 'id, title', 'sort' => '-id'];
    * $data = $cxfUser->getCompanies($options, false);
    */
-  public function getCompanies($options = null, $usePost = true) {
+  public function getCompanies($options = [], $usePost = true) {
     return CxfHelper::getQueryResults($this->client, '/customer-data/companies', $options, $usePost);
   }
 
@@ -54,7 +54,7 @@ trait Companies {
    * $options = ['fields' => 'id, title'];
    * $data = $cxfUser->getCompany(21, $options);
    */
-  public function getCompany($id, $options = null) {
+  public function getCompany($id, $options = []) {
     return $this->client->raw('get', "/customer-data/companies/{$id}", $options);
   }
 
@@ -79,7 +79,7 @@ trait Companies {
    * ];
    * $data = $cxfUser->createCompany($data);
    */
-  public function createCompany($data, $options = null) {
+  public function createCompany($data, $options = []) {
     return $this->client->raw('post', '/customer-data/companies/', $options, $this->dataTransform($data));
   }
 
@@ -97,7 +97,7 @@ trait Companies {
    * ];
    * $data = $cxfUser->updateCompany(23, $data);
    */
-  public function updateCompany($id, $data, $options = null) {
+  public function updateCompany($id, $data, $options = []) {
     return $this->client->raw('put', "/customer-data/companies/{$id}", $options, $this->dataTransform($data));
   }
 

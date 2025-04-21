@@ -16,12 +16,12 @@ trait Relationships
         return $this->client->raw('post', '/config/relationships/detach', null, CxfHelper::dataTransform($data));
     }
 
-    public function getRelationships($options = null)
+    public function getRelationships($options = [])
     {
         return $this->client->raw('get', '/config/relationships', $options);
     }
 
-    public function getRelationship($id, $options = null)
+    public function getRelationship($id, $options = [])
     {
         return $this->client->raw('get', "/config/relationships/{$id}", $options);
     }

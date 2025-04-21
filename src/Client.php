@@ -40,7 +40,7 @@ class Client
         $this->inflector = InflectorFactory::create()->build();
     }
 
-    public function raw($action, $url, $options = null, $data = null, $baseUrl = null, $compatibilityOptions = [], $onlyTracking = false, $dataTransform = true)
+    public function raw($action, $url, $options = [], $data = null, $baseUrl = null, $compatibilityOptions = [], $onlyTracking = false, $dataTransform = true)
     {
         if ($dataTransform) $data = CxfHelper::dataTransform($data);
         $baseUrl = $baseUrl ?: $this->baseURL;
@@ -124,10 +124,30 @@ class Client
         }
 
         try {
-            return json_decode($response, true);
+            $decodedResponse = json_decode($response, true);
+            if (!$decodedResponse) throw new \Exception($response);
+            return $decodedResponse;
         } catch (\Exception $e) {
-            return $response;
+            return $this->getJsonIfExist($e->getMessage());
         }
+    }
+
+    private function getJsonIfExist($message)
+    {
+        $isString = is_string($message);
+        if (!$isString) return $message;
+
+        $hasJson = preg_match('/\{.*\}/', $message);
+        if (!$hasJson) return $message;
+
+        // Get position of json
+        $start = strpos($message, '{');
+        $end = strrpos($message, '}');
+        $length = $end - $start + 1;
+
+        // Get json
+        $json = substr($message, $start, $length);
+        return json_decode($json, true);
     }
 
     // Define a private function called setScope, it should accept a single argument called $scope and returns nothing

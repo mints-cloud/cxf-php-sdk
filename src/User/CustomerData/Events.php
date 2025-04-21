@@ -29,7 +29,7 @@ trait Events {
    * ];
    * $data = $cxfUser->getEvents($options, true);
    */
-  public function getEvents($options = null, $usePost = true) {
+  public function getEvents($options = [], $usePost = true) {
     return CxfHelper::getQueryResults($this->client,'/customer-data/utilities/events/', $options, $usePost);
   }
 
@@ -51,7 +51,7 @@ trait Events {
    * ];
    * $data = $cxfUser->getEvent(5, $options);
    */
-  public function getEvent($id, $options = null) {
+  public function getEvent($id, $options = []) {
     return $this->client->raw('get', "/customer-data/utilities/events/{$id}", $options);
   }
 
@@ -71,7 +71,7 @@ trait Events {
    * ];
    * $data = $cxfUser->createEvent($data);
    */
-  public function createEvent($data, $options = null) {
+  public function createEvent($data, $options = []) {
     return $this->client->raw('post', '/customer-data/utilities/events/', $options, $this->dataTransform($data));
   }
 
@@ -90,7 +90,7 @@ trait Events {
    * ];
    * $data = $cxfUser->updateEvent(65, $data);
    */
-  public function updateEvent($id, $data, $options = null) {
+  public function updateEvent($id, $data, $options = []) {
     return $this->client->raw('put', "/customer-data/utilities/events/{$id}", $options, $this->dataTransform($data));
   }
 

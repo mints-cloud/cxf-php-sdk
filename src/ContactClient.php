@@ -74,7 +74,7 @@ class ContactClient
 
     public function magicLinkLogin($token)
     {
-        $response = $this->client->raw('get', "/contacts/magic-link-login/{$token}", null, '/api/v1');
+        $response = $this->client->raw('get', "/contact/login/{$token}", null, '/api/v1/magic-link');
         if (array_key_exists('session_token', $response)) {
             $this->client->setSessionToken($response['session_token']);
         }
@@ -95,7 +95,7 @@ class ContactClient
         } else {
             $data['email'] = $emailOrPhone;
         }
-        return $this->client->raw('post', '/contacts/magic-link', null, $this->dataTransform($data), '/api/v1');
+        return $this->client->raw('post', '/contact/request', null, $this->dataTransform($data), '/api/v1/magic-link');
     }
 
     public function getMe($options = null)

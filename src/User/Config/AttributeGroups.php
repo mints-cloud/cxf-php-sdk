@@ -30,7 +30,7 @@ trait AttributeGroups
      * $options = ['sort' => 'id'];
      * $data = $this->getAttributeGroups($options);
      */
-    public function getAttributeGroups($options = null)
+    public function getAttributeGroups($options = [])
     {
         return $this->client->raw('get', '/config/attribute-groups', $options);
     }

@@ -18,7 +18,7 @@ trait Workflows
      * $options = ['sort' => 'title', 'fields' => 'title'];
      * $data = $cxfUser->getWorkflows($options);
      */
-    public function getWorkflows($options = null)
+    public function getWorkflows($options = [])
     {
         return $this->client->raw('get', '/customer-data/workflows', $options);
     }
@@ -38,7 +38,7 @@ trait Workflows
      * $options = ['fields' => 'id, title'];
      * $data = $cxfUser->getWorkflow(1, $options);
      */
-    public function getWorkflow($id, $options = null)
+    public function getWorkflow($id, $options = [])
     {
         return $this->client->raw('get', "/customer-data/workflows/{$id}", $options);
     }
@@ -57,7 +57,7 @@ trait Workflows
      * ];
      * $data = $cxfUser->createWorkflow(json_encode($data));
      */
-    public function createWorkflow($data, $options = null)
+    public function createWorkflow($data, $options = [])
     {
         return $this->client->raw('post', '/customer-data/workflows/', $options, $data);
     }
@@ -76,17 +76,17 @@ trait Workflows
      * ];
      * $data = $cxfUser->updateWorkflow(7, $data);
      */
-    public function updateWorkflow($id, $data, $options = null)
+    public function updateWorkflow($id, $data, $options = [])
     {
         return $this->client->raw('put', "/customer-data/workflows/{$id}", $options, $this->correctJson($data));
     }
 
-    public function checkWorkflowObjectSteps($id, $data, $options = null)
+    public function checkWorkflowObjectSteps($id, $data, $options = [])
     {
         return $this->client->raw('put', "/customer-data/workflows/{$id}/object-step/check-item", $options, $data);
     }
 
-    public function updateWorkflowObjectSteps($id, $data, $options = null)
+    public function updateWorkflowObjectSteps($id, $data, $options = [])
     {
         return $this->client->raw('put', "/customer-data/workflows/{$id}/object-step", $options, $data);
     }

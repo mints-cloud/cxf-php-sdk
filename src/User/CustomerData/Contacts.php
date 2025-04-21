@@ -29,7 +29,7 @@ trait Contacts {
    * ];
    * $data = $cxfUser->getContacts($options, true);
    */
-  public function getContacts($options = null, $usePost = true) {
+  public function getContacts($options = [], $usePost = true) {
     return CxfHelper::getQueryResults($this->client,'/customer-data/contacts', $options, $usePost);
   }
 
@@ -51,7 +51,7 @@ trait Contacts {
    * ];
    * $data = $cxfUser->getContact(5, $options);
    */
-  public function getContact($id, $options = null) {
+  public function getContact($id, $options = []) {
     return $this->client->raw('get', "/customer-data/contacts/{$id}", $options);
   }
 
@@ -71,11 +71,11 @@ trait Contacts {
    * ];
    * $data = $cxfUser->createContact($data);
    */
-  public function createContact($data, $options = null) {
+  public function createContact($data, $options = []) {
     return $this->client->raw('post', '/customer-data/contacts', $options, $this->dataTransform($data));
   }
 
-  public function findOrCreateContact($data, $options = null) {
+  public function findOrCreateContact($data, $options = []) {
     return $this->client->raw('post', '/customer-data/contacts/find-or-create', $options, $this->dataTransform($data));
   }
 
@@ -94,7 +94,7 @@ trait Contacts {
    * ];
    * $data = $cxfUser->updateContact(65, $data);
    */
-  public function updateContact($id, $data, $options = null) {
+  public function updateContact($id, $data, $options = []) {
     return $this->client->raw('put', "/customer-data/contacts/{$id}", $options, $this->dataTransform($data));
   }
 

@@ -11,7 +11,7 @@ class CxfHelper
      * @param bool $usePost
      * @return mixed
      */
-    public static function getQueryResults($client, string $url, array $options = null, bool $usePost = true)
+    public static function getQueryResults($client, string $url, array $options = [], bool $usePost = true)
     {
         if ($usePost) {
             return $client->raw('post', $url . '/query', $options);
