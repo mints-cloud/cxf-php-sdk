@@ -77,7 +77,7 @@ class UserClient
      */
     public function magicLinkLogin(string $token)
     {
-        return $this->client->raw('get', "/users/magic-link-login/${token}", null, null, '/api/v1');
+        return $this->client->raw('get', "/user/login/${token}", null, null, '/api/v1/magic-link');
     }
 
     /**
@@ -89,11 +89,11 @@ class UserClient
      */
     public function sendMagicLink(string $email, string $redirectUrl = '', int $lifeTime = 24)
     {
-        return $this->client->raw('post', '/users/send-magic-link', null, ['data' => [
+        return $this->client->raw('post', '/user/request', null, ['data' => [
             'email' => $email,
             'redirectUrl' => $redirectUrl,
             'lifeTime' => $lifeTime
-        ]], '/api/v1');
+        ]], '/api/v1/magic-link');
     }
 
     private function dataTransform($data)

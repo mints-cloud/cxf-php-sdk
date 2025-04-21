@@ -28,10 +28,10 @@ trait Users
     /**
      * Get user.
      *
-     * @param int $id
+     * @param string $id
      * @return mixed
      */
-    public function getUser(int $id)
+    public function getUser(string $id)
     {
         return $this->client->raw('get', "/config/users/{$id}");
     }
@@ -43,7 +43,7 @@ trait Users
      * @param array|null $options
      * @return mixed
      */
-    public function createUser(array $data, ?array $options = null)
+    public function createUser(array $data, ?array $options = [])
     {
         return $this->client->raw('post', '/config/users', $options, $this->dataTransform($data));
     }
@@ -51,12 +51,12 @@ trait Users
     /**
      * Update user.
      *
-     * @param int $id
+     * @param string $id
      * @param array $data
      * @param array|null $options
      * @return mixed
      */
-    public function updateUser(int $id, array $data, ?array $options = null)
+    public function updateUser(string $id, array $data, ?array $options = [])
     {
         return $this->client->raw('put', "/config/users/{$id}", $options, $this->dataTransform($data));
     }

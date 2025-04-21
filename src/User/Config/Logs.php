@@ -6,12 +6,12 @@ use Cxf\CxfHelper;
 
 trait Logs
 {
-    public function getLogs($options = null, $use_post = true)
+    public function getLogs($options = [], $use_post = true)
     {
         return CxfHelper::getQueryResults($this->client, '/config/logs', $options, $use_post);
     }
 
-    public function getLog($id, $options = null)
+    public function getLog($id, $options = [])
     {
         return $this->client->raw('get', "/config/logs/{$id}", $options);
     }

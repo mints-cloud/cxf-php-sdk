@@ -5,27 +5,27 @@ namespace Cxf\User\Content;
 use Cxf\CxfHelper;
 trait PrintVersions
 {
-    public function getPrintVersions($options = null, $usePost = true)
+    public function getPrintVersions($options = [], $usePost = true)
     {
         return CxfHelper::getQueryResults($this->client, '/content/print-versions', $options, $usePost);
     }
 
-    public function getPrintVersion($id, $options = null)
+    public function getPrintVersion($id, $options = [])
     {
         return $this->client->raw('get', "/content/print-versions/{$id}", $options);
     }
 
-    public function createPrintVersion($data, $options = null)
+    public function createPrintVersion($data, $options = [])
     {
         return $this->client->raw('post', '/content/print-versions', $options, CxfHelper::dataTransform($data));
     }
 
-    public function createPrintVersionFromPrintVersion($id, $data, $options = null)
+    public function createPrintVersionFromPrintVersion($id, $data, $options = [])
     {
         return $this->client->raw('post', "/content/print-versions/{$id}/print-version", $options, CxfHelper::dataTransform($data));
     }
 
-    public function updatePrintVersion($id, $data, $options = null)
+    public function updatePrintVersion($id, $data, $options = [])
     {
         return $this->client->raw('put', "/content/print-versions/{$id}", $options, CxfHelper::dataTransform($data));
     }

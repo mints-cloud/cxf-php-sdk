@@ -36,7 +36,7 @@ trait MessageTemplates
      * $options = ['fields' => 'id'];
      * $data = $this->getMessageTemplates($options);
      */
-    public function getMessageTemplates($options = null)
+    public function getMessageTemplates($options = [])
     {
         return $this->client->raw('get', '/content/message-templates', $options);
     }
@@ -56,7 +56,7 @@ trait MessageTemplates
      * $options = ['fields' => 'id'];
      * $data = $this->getMessageTemplate(1, $options);
      */
-    public function getMessageTemplate($id, $options = null)
+    public function getMessageTemplate($id, $options = [])
     {
         return $this->client->raw('get', "/content/message-templates/{$id}", $options);
     }
