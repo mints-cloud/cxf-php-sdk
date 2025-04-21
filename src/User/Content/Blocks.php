@@ -10,22 +10,22 @@ trait Blocks
         return $this->client->raw('post', "/content/blocks/{$id}/duplicate", null, $data);
     }
 
-    public function getBlocks($options = null, $usePost = true)
+    public function getBlocks($options = [], $usePost = true)
     {
         return $this->getQueryResults($this->client, '/content/blocks', $options, $usePost);
     }
 
-    public function getBlock($id, $options = null)
+    public function getBlock($id, $options = [])
     {
         return $this->client->raw('get', "/content/blocks/{$id}", $options);
     }
 
-    public function createBlock($data, $options = null)
+    public function createBlock($data, $options = [])
     {
         return $this->client->raw('post', '/content/blocks', $options, CxfHelper::dataTransform($data));
     }
 
-    public function updateBlock($id, $data, $options = null)
+    public function updateBlock($id, $data, $options = [])
     {
         return $this->client->raw('put', "/content/blocks/{$id}", $options, CxfHelper::dataTransform($data));
     }
@@ -35,7 +35,7 @@ trait Blocks
         return $this->client->raw('delete', "/content/blocks/{$id}");
     }
 
-    private function getQueryResults($endpoint, $options = null, $usePost = true)
+    private function getQueryResults($endpoint, $options = [], $usePost = true)
     {
         $method = $usePost ? 'post' : 'get';
         return $this->client->raw($method, $endpoint, $options);

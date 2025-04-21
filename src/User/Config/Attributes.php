@@ -26,7 +26,7 @@ trait Attributes
      * Example:
      * $data = $this->getSubAttributes($options);
      */
-    public function getSubAttributes($options)
+    public function getSubAttributes($options = [])
     {
         return $this->client->raw('get', '/config/attributes/sub-attributes', $options);
     }
@@ -38,9 +38,9 @@ trait Attributes
      * Example:
      * $data = $this->getAttributes();
      */
-    public function getAttributes()
+    public function getAttributes($options = [])
     {
-        return $this->client->raw('get', '/config/attributes');
+        return $this->client->raw('get', '/config/attributes', $options);
     }
 
     /**

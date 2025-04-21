@@ -8,7 +8,7 @@ trait Profile {
     #
     # ==== Example
     #     @data = @cxf_user.me
-    public function me($options = null) {
+    public function me($options = []) {
         return $this->client->raw('get', '/profile/me', $options);
     }
 }

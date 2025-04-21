@@ -40,7 +40,7 @@ trait Content
      * $options = ['fields' => 'title'];
      * $data = $this->getKeywords($options);
      */
-    public function getKeywords($options = null)
+    public function getKeywords($options = [])
     {
         return $this->client->raw('get', '/content/keywords', $options);
     }
@@ -108,7 +108,7 @@ trait Content
      * $options = ['fields' => 'title'];
      * $data = $this->getStages($options);
      */
-    public function getStages($options = null)
+    public function getStages($options = [])
     {
         return $this->client->raw('get', '/content/stages', $options);
     }

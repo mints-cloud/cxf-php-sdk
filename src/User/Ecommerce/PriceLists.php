@@ -8,19 +8,19 @@ trait PriceLists
         return CxfHelper::getQueryResults($this->client, '/ecommerce/price-lists', $options, $usePost);
     }
 
-    public function createPriceList($data, $options = null) {
+    public function createPriceList($data, $options = []) {
         return $this->client->raw('post', '/ecommerce/price-lists', $options, CxfHelper::dataTransform($data));
     }
 
-    public function updatePriceList($id, $data, $options = null) {
+    public function updatePriceList($id, $data, $options = []) {
         return $this->client->raw('put', "/ecommerce/price-lists/{$id}", $options, CxfHelper::dataTransform($data));
     }
 
-    public function deletePriceList($id, $options = null) {
+    public function deletePriceList($id, $options = []) {
         return $this->client->raw('delete', "/ecommerce/price-lists/{$id}", $options);
     }
 
-    public function getPriceList($id, $options = null) {
+    public function getPriceList($id, $options = []) {
         return $this->client->raw('get', "/ecommerce/price-lists/{$id}", $options);
     }
 }

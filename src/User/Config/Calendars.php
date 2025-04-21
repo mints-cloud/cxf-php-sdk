@@ -20,7 +20,7 @@ trait Calendars
      * ];
      * $data = $this->getCalendars($options);
      */
-    public function getCalendars($options = null)
+    public function getCalendars($options = [])
     {
         return $this->client->raw('get', '/config/calendars', $options);
     }
@@ -42,7 +42,7 @@ trait Calendars
      * ];
      * $data = $this->getCalendar(1, $options);
      */
-    public function getCalendar($id, $options = null)
+    public function getCalendar($id, $options = [])
     {
         return $this->client->raw('get', "/config/calendars/{$id}", $options);
     }

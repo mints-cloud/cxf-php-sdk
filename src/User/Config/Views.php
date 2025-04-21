@@ -6,7 +6,7 @@ use Cxf\CxfHelper;
 
 trait Views
 {
-    public function getViews($options = null)
+    public function getViews($options = [])
     {
         return $this->client->raw('get', '/config/views', $options);
     }
