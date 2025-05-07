@@ -23,7 +23,7 @@ class PublicClient
     {
         $this->client = new Client(
             $host ?? $_ENV['CXF_HOST'] ?? null,
-            $apiKey ?? $_ENV['CXF_API_KEY'] ?? null,
+            $apiKey ?? $_ENV['CXF_PUBLIC_API_KEY'] ?? null,
             'public',
             $sessionToken,
             $refreshToken,
