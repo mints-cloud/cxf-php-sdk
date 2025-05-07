@@ -23,7 +23,7 @@ class ContactClient
     {
         $this->client = new Client(
             $host ?? $_ENV['CXF_HOST'] ?? null,
-            $apiKey ?? $_ENV['CXF_API_KEY'] ?? null,
+            $apiKey ?? $_ENV['CXF_PUBLIC_API_KEY'] ?? null,
             'contact',
             $sessionToken,
             $refreshToken,
@@ -74,7 +74,7 @@ class ContactClient
 
     public function magicLinkLogin($token)
     {
-        $response = $this->client->raw('get', "/contact/login/{$token}", null, '/api/v1/magic-link');
+        $response = $this->client->raw('get', "/contact/login/{$token}", null, null, '/api/v1/magic-link');
         if (array_key_exists('session_token', $response)) {
             $this->client->setSessionToken($response['session_token']);
         }

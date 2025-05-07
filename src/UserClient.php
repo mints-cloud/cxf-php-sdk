@@ -36,7 +36,7 @@ class UserClient
     {
         $this->client = new Client(
             $host ?? $_ENV['CXF_HOST'] ?? null,
-            $apiKey ?? $_ENV['CXF_API_KEY'] ?? null,
+            $apiKey ?? $_ENV['CXF_USER_API_KEY'] ?? null,
             'user',
             $sessionToken,
             $refreshToken,
