@@ -6,16 +6,9 @@ trait UserAuthTrait
 {
     public UserClient $cxfUser;
 
-    public function initializeUserClient($host = null, $apiKey = null, $sessionToken = null, $refreshToken = null, $debug = false, $timeouts = []): void
+    public function initializeUserClient($host = null, $apiKey = null, $debug = false, $timeouts = []): void
     {
-        // Check if cxf_session_token cookie exists, then set session token from cookie
-        if (isset($_COOKIE['cxf_user_access_token'])) {
-            $sessionToken = $_COOKIE['cxf_user_access_token'];
-        }
-        if (isset($_COOKIE['cxf_user_refresh_token'])) {
-            $refreshToken = $_COOKIE['cxf_user_refresh_token'];
-        }
-        $this->cxfUser = new UserClient($host, $apiKey, $sessionToken, $refreshToken, $debug, $timeouts);
+        $this->cxfUser = new UserClient($host, $apiKey, $debug, $timeouts);
     }
 
     /**
@@ -27,16 +20,8 @@ trait UserAuthTrait
     public function cxfUserLogin(string $email, string $password)
     {
         // Check if cxfUser is not initialized, then initialize it
-        if (!isset($this->cxfUser)) $this->initializeClient();
-        $response = $this->cxfUser->login($email, $password);
-        // Verify if api_token key exists in response
-        if (isset($response['data']['access_token']) && isset($response['data']['refresh_token'])) {
-            $this->cxfUser->client->setSessionToken($response['data']['access_token']);
-            $this->cxfUser->client->setRefreshToken($response['data']['refresh_token']);
-
-            setcookie('cxf_user_access_token', $response['data']['access_token'], time() + 86400, '/');
-            setcookie('cxf_user_refresh_token', $response['data']['refresh_token'], time() + 86400, '/');
-        }
+        if (!$this->cxfUser) $this->initializeUserClient();
+        $this->cxfUser->login($email, $password);
     }
 
     /**

@@ -7,18 +7,9 @@ trait ContactAuthTrait
     public ContactClient $cxfContact;
     public string $contactToken;
 
-    public function initializeContactClient($host = null, $apiKey = null, $sessionToken = null, $refreshToken = null, $debug = false, $timeouts = []): void
+    public function initializeContactClient($host = null, $apiKey = null, $debug = false, $timeouts = []): void
     {
-        // Check if cxf_session_token cookie exists, then set session token from cookie
-        if (isset($_COOKIE['cxf_contact_access_token'])) {
-            $sessionToken = $_COOKIE['cxf_contact_access_token'];
-        }
-
-        if (isset($_COOKIE['cxf_contact_refresh_token'])) {
-            $refreshToken = $_COOKIE['cxf_contact_refresh_token'];
-        }
-
-        $this->cxfContact = new ContactClient($host, $apiKey, $sessionToken, $refreshToken, $debug, $timeouts);
+        $this->cxfContact = new ContactClient($host, $apiKey, $debug, $timeouts);
     }
 
     /**
@@ -30,15 +21,8 @@ trait ContactAuthTrait
     public function cxfContactLogin($email, $password)
     {
         // Login in cxf
-        $response = $this->cxfContact->login($email, $password);
-
-        if (!isset($response['data']['access_token']) || !isset($response['data']['refresh_token'])) {
-            $this->cxfContact->client->setSessionToken($response['data']['access_token']);
-            $this->cxfContact->client->setRefreshToken($response['data']['refresh_token']);
-
-            setcookie('cxf_contact_access_token', $response['data']['access_token'], time() + 86400, '/');
-            setcookie('cxf_contact_refresh_token', $response['data']['refresh_token'], time() + 86400, '/');
-        }
+        if (!$this->cxfContact) $this->initializeContactClient();
+        return $this->cxfContact->login($email, $password);
     }
 
     public function cxfContactMagicLinkLogin($hash, $redirectInError = false)

@@ -32,14 +32,12 @@ class UserClient
      * @param $debug
      * @param $timeouts
      */
-    public function __construct($host = null, $apiKey = null, $sessionToken = null, $refreshToken = null, $debug = false, $timeouts = [])
+    public function __construct($host = null, $apiKey = null, $debug = false, $timeouts = [])
     {
         $this->client = new Client(
             $host ?? $_ENV['CXF_HOST'] ?? null,
             $apiKey ?? $_ENV['CXF_USER_API_KEY'] ?? null,
             'user',
-            $sessionToken,
-            $refreshToken,
             null,
             null,
             $debug,
@@ -55,19 +53,10 @@ class UserClient
      */
     public function login($email, $password)
     {
-        $response = $this->client->raw('post', '/users/login', null, [ 'data' => [
+        return $this->client->raw('post', '/users/login', null, [ 'data' => [
             'email' => $email,
             'password' => $password
         ]], '/api/v1', ['no_content_type' => true], false, false);
-
-        if (!is_array($response)) return $response;
-
-        if (isset($response['data']['access-token']) && isset($response['data']['refresh-token'])) {
-            $this->client->setSessionToken($response['data']['access-token']);
-            $this->client->setRefreshToken($response['data']['refresh-token']);
-        }
-
-        return $response;
     }
 
     /**

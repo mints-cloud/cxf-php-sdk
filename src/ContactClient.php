@@ -19,14 +19,12 @@ class ContactClient
      * @param $debug
      * @param $timeouts
      */
-    public function __construct($host = null, $apiKey = null, $sessionToken = null, $refreshToken = null, $debug = false, $timeouts = [])
+    public function __construct($host = null, $apiKey = null, $debug = false, $timeouts = [])
     {
         $this->client = new Client(
             $host ?? $_ENV['CXF_HOST'] ?? null,
             $apiKey ?? $_ENV['CXF_PUBLIC_API_KEY'] ?? null,
             'contact',
-            $sessionToken,
-            $refreshToken,
             null,
             null,
             $debug,
@@ -45,16 +43,8 @@ class ContactClient
             'email' => $email,
             'password' => $password
         ];
-        $response = $this->client->raw('post', '/contacts/login', null, $this->dataTransform($data), '/api/v1', [], false, false);
 
-        if (!is_array($response)) return $response;
-
-        if (isset($response['data']['access-token']) && isset($response['data']['refresh-token'])) {
-            $this->client->setSessionToken($response['data']['access-token']);
-            $this->client->setRefreshToken($response['data']['refresh-token']);
-        }
-
-        return $response;
+        return $this->client->raw('post', '/contacts/login', null, $this->dataTransform($data), '/api/v1', [], false, false);
     }
 
     public function recoverPassword($data)
