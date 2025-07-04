@@ -27,7 +27,7 @@ class Client
     public function __construct($host, $apiKey, $scope = null, $contactTokenId = null, $visitId = null, $debug = false, $timeouts = [])
     {
         $this->host = $host ?? env('CXF_HOST');
-        $this->apiKey = $apiKey ?? env('CXF_API_KEY');
+        $this->apiKey = $apiKey ?? $this->getApiKey($scope);
         $this->contactTokenId = $contactTokenId;
         $this->visitId = $visitId;
         $this->debug = $debug;
@@ -164,6 +164,17 @@ class Client
             default:
                 $this->baseURL = '/api/v1';
         }
+    }
+
+    private function getApiKey($scope)
+    {
+        // return the API key based on the scope
+        if ($scope === 'user') return env('CXF_USER_API_KEY');
+
+        // Check if CXF_CONTACT_API_KEY is set, if not, use CXF_API_KEY
+        $apiKey = env('CXF_CONTACT_API_KEY');
+        if (!$apiKey) $apiKey = env('CXF_API_KEY');
+        return $apiKey;
     }
 
     private function httpRequest($method, $url, $headers = null, $data = null, $timeout = 10)
