@@ -21,7 +21,7 @@ trait UserAuthTrait
     {
         // Check if cxfUser is not initialized, then initialize it
         if (!$this->cxfUser) $this->initializeUserClient();
-        $this->cxfUser->login($email, $password);
+        return $this->cxfUser->login($email, $password);
     }
 
     /**

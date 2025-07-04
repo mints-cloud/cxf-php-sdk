@@ -34,7 +34,7 @@ class ContactClient
 
     public function register($data)
     {
-        return $this->client->raw('post', '/contacts/register', null, $this->dataTransform($data), '/api/v1');
+        return $this->client->raw('post', '/register', null, $this->dataTransform($data), '/api/v1');
     }
 
     public function login($email, $password)
@@ -44,22 +44,22 @@ class ContactClient
             'password' => $password
         ];
 
-        return $this->client->raw('post', '/contacts/login', null, $this->dataTransform($data), '/api/v1', [], false, false);
+        return $this->client->raw('post', '/login', null, $this->dataTransform($data), '/api/v1', [], false, false);
     }
 
     public function recoverPassword($data)
     {
-        return $this->client->raw('post', '/contacts/recover-password', null, $this->dataTransform($data), '/api/v1');
+        return $this->client->raw('post', '/recover-password', null, $this->dataTransform($data), '/api/v1');
     }
 
     public function resetPassword($data)
     {
-        return $this->client->raw('post', '/contacts/reset-password', null, $this->dataTransform($data), '/api/v1');
+        return $this->client->raw('post', '/reset-password', null, $this->dataTransform($data), '/api/v1');
     }
 
     public function oauthLogin($data)
     {
-        return $this->client->raw('post', '/contacts/oauth-login', null, $data, '/api/v1');
+        return $this->client->raw('post', '/oauth-login', null, $data, '/api/v1');
     }
 
     public function magicLinkLogin($token)
@@ -90,12 +90,12 @@ class ContactClient
 
     public function getMe($options = null)
     {
-        return $this->client->raw('get', '/contacts/me', $options, null, '/api/v1');
+        return $this->client->raw('get', '/me', $options, null, '/api/v1');
     }
 
     public function getMyProducts($options = null)
     {
-        return $this->client->raw('get', '/contacts/my-products', $options, null, '/api/v1');
+        return $this->client->raw('get', '/my-products', $options, null, '/api/v1');
     }
 
     public function status()
