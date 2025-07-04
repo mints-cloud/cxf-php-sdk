@@ -12,8 +12,6 @@ class Client
     public $host;
     public $apiKey;
     public $scope;
-    public $sessionToken;
-    public $refreshToken;
     public $contactTokenId;
     public $visitId;
     public $debug;
@@ -26,12 +24,10 @@ class Client
     private $deleteHttpTimeout = 10;
 
 
-    public function __construct($host, $apiKey, $scope = null, $sessionToken = null, $refreshToken = null, $contactTokenId = null, $visitId = null, $debug = false, $timeouts = [])
+    public function __construct($host, $apiKey, $scope = null, $contactTokenId = null, $visitId = null, $debug = false, $timeouts = [])
     {
         $this->host = $host ?? env('CXF_HOST');
-        $this->apiKey = $apiKey ?? env('CXF_API_KEY');
-        $this->sessionToken = $sessionToken;
-        $this->refreshToken = $refreshToken;
+        $this->apiKey = $apiKey ?? $this->getApiKey($scope);
         $this->contactTokenId = $contactTokenId;
         $this->visitId = $visitId;
         $this->debug = $debug;
@@ -170,6 +166,17 @@ class Client
         }
     }
 
+    private function getApiKey($scope)
+    {
+        // return the API key based on the scope
+        if ($scope === 'user') return env('CXF_USER_API_KEY');
+
+        // Check if CXF_CONTACT_API_KEY is set, if not, use CXF_API_KEY
+        $apiKey = env('CXF_CONTACT_API_KEY');
+        if (!$apiKey) $apiKey = env('CXF_API_KEY');
+        return $apiKey;
+    }
+
     private function httpRequest($method, $url, $headers = null, $data = null, $timeout = 10)
     {
         // Create a new Guzzle client with a timeout of 10 seconds, $method could be the HTTP verb (GET, POST, PUT, DELETE)
@@ -184,7 +191,8 @@ class Client
             // Send the request and store the response in a variable
             $response = $client->request($method, $url, $options);
             // get Headers
-            $this->replaceTokens($response->getHeaders());
+            $setCookiesHeader = $response->getHeader('Set-Cookie');
+            if ($setCookiesHeader) $this->setCookies($setCookiesHeader);
             // Return the response body as a string
             return $response->getBody()->getContents();
         } catch (RequestException $e) {
@@ -217,10 +225,11 @@ class Client
     {
         $h = [
             'Accept' => 'application/json',
-            'ApiKey' => $this->apiKey,
-            'Access-Token' => $this->sessionToken,
-            'Refresh-Token' => $this->refreshToken,
+            'ApiKey' => $this->apiKey
         ];
+
+        // Copy local cookies to $h
+        $h = array_merge($h, $_COOKIE);
 
         if (empty($compatibilityOptions['no_content_type'])) {
             $h['Content-Type'] = 'application/json';
@@ -230,9 +239,6 @@ class Client
         }
         if ($this->visitId) {
             $h['Visit-Id'] = $this->visitId;
-        }
-        if ($this->sessionToken) {
-            $h['Authorization'] = 'Bearer ' . $this->sessionToken;
         }
 
         if ($headers) {
@@ -312,33 +318,53 @@ class Client
         return $pluralized !== $str && $singularized === $str;
     }
 
-    public function setSessionToken($sessionToken)
+    public function setCookies($headers)
     {
-        $this->sessionToken = $sessionToken;
-    }
+        $parsedCookies = $this->parseSetCookies($headers);
 
-    public function setRefreshToken($refreshToken)
-    {
-        $this->refreshToken = $refreshToken;
-    }
-
-    public function replaceTokens($headers)
-    {
-        $hasTokens = isset($headers['Access-Token']) && isset($headers['Refresh-Token']);
-        if ($hasTokens) {
-
-            $this->sessionToken = $headers['Access-Token'][0];
-            $this->refreshToken = $headers['Refresh-Token'][0];
-
-            // verificamos si el scope es user o contact
-
-            if ($this->scope === 'user') {
-                setcookie('cxf_user_access_token', $headers['Access-Token'][0], time() + 86400, '/');
-                setcookie('cxf_user_refresh_token', $headers['Refresh-Token'][0], time() + 86400, '/');
-            } else {
-                setcookie('cxf_contact_access_token', $headers['Access-Token'][0], time() + 86400, '/');
-                setcookie('cxf_contact_refresh_token', $headers['Refresh-Token'][0], time() + 86400, '/');
-            }
+        foreach ($parsedCookies as $cookie) {
+            setcookie(
+                $cookie['name'],
+                $cookie['value'],
+                [
+                    'expires' => isset($cookie['expires']) ? strtotime($cookie['expires']) : 0,
+                    'path' => $cookie['path'] ?? '/',
+                    'domain' => '',
+                    'secure' => $cookie['secure'] ?? false,
+                    'httponly' => $cookie['httponly'] ?? false,
+                    'samesite' => $cookie['samesite'] ?? 'Lax',
+                ]
+            );
         }
     }
+
+    function parseSetCookies(array $setCookies): array
+    {
+        $parsedCookies = [];
+
+        foreach ($setCookies as $cookieString) {
+            $parts = explode(';', $cookieString);
+            $parts = array_map('trim', $parts);
+
+            $cookie = [];
+
+            [$name, $value] = explode('=', array_shift($parts), 2);
+            $cookie['name'] = $name;
+            $cookie['value'] = $value;
+
+            foreach ($parts as $part) {
+                if (strpos($part, '=') !== false) {
+                    [$attrName, $attrValue] = explode('=', $part, 2);
+                    $cookie[strtolower($attrName)] = $attrValue;
+                } else {
+                    $cookie[strtolower($part)] = true;
+                }
+            }
+
+            $parsedCookies[$name] = $cookie;
+        }
+
+        return $parsedCookies;
+    }
+
 }

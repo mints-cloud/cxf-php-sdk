@@ -19,14 +19,12 @@ class PublicClient
      * @param $debug
      * @param $timeouts
      */
-    public function __construct($host = null, $apiKey = null, $sessionToken = null, $refreshToken = null, $debug = false, $timeouts = [])
+    public function __construct($host = null, $apiKey = null, $debug = false, $timeouts = [])
     {
         $this->client = new Client(
             $host ?? $_ENV['CXF_HOST'] ?? null,
             $apiKey ?? $_ENV['CXF_PUBLIC_API_KEY'] ?? null,
             'public',
-            $sessionToken,
-            $refreshToken,
             null,
             null,
             $debug,

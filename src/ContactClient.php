@@ -19,14 +19,12 @@ class ContactClient
      * @param $debug
      * @param $timeouts
      */
-    public function __construct($host = null, $apiKey = null, $sessionToken = null, $refreshToken = null, $debug = false, $timeouts = [])
+    public function __construct($host = null, $apiKey = null, $debug = false, $timeouts = [])
     {
         $this->client = new Client(
             $host ?? $_ENV['CXF_HOST'] ?? null,
             $apiKey ?? $_ENV['CXF_PUBLIC_API_KEY'] ?? null,
             'contact',
-            $sessionToken,
-            $refreshToken,
             null,
             null,
             $debug,
@@ -36,7 +34,7 @@ class ContactClient
 
     public function register($data)
     {
-        return $this->client->raw('post', '/contacts/register', null, $this->dataTransform($data), '/api/v1');
+        return $this->client->raw('post', '/register', null, $this->dataTransform($data), '/api/v1');
     }
 
     public function login($email, $password)
@@ -45,31 +43,23 @@ class ContactClient
             'email' => $email,
             'password' => $password
         ];
-        $response = $this->client->raw('post', '/contacts/login', null, $this->dataTransform($data), '/api/v1', [], false, false);
 
-        if (!is_array($response)) return $response;
-
-        if (isset($response['data']['access-token']) && isset($response['data']['refresh-token'])) {
-            $this->client->setSessionToken($response['data']['access-token']);
-            $this->client->setRefreshToken($response['data']['refresh-token']);
-        }
-
-        return $response;
+        return $this->client->raw('post', '/login', null, $this->dataTransform($data), '/api/v1', [], false, false);
     }
 
     public function recoverPassword($data)
     {
-        return $this->client->raw('post', '/contacts/recover-password', null, $this->dataTransform($data), '/api/v1');
+        return $this->client->raw('post', '/recover-password', null, $this->dataTransform($data), '/api/v1');
     }
 
     public function resetPassword($data)
     {
-        return $this->client->raw('post', '/contacts/reset-password', null, $this->dataTransform($data), '/api/v1');
+        return $this->client->raw('post', '/reset-password', null, $this->dataTransform($data), '/api/v1');
     }
 
     public function oauthLogin($data)
     {
-        return $this->client->raw('post', '/contacts/oauth-login', null, $data, '/api/v1');
+        return $this->client->raw('post', '/oauth-login', null, $data, '/api/v1');
     }
 
     public function magicLinkLogin($token)
@@ -100,12 +90,12 @@ class ContactClient
 
     public function getMe($options = null)
     {
-        return $this->client->raw('get', '/contacts/me', $options, null, '/api/v1');
+        return $this->client->raw('get', '/me', $options, null, '/api/v1');
     }
 
     public function getMyProducts($options = null)
     {
-        return $this->client->raw('get', '/contacts/my-products', $options, null, '/api/v1');
+        return $this->client->raw('get', '/my-products', $options, null, '/api/v1');
     }
 
     public function status()
