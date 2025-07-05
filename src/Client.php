@@ -221,6 +221,19 @@ class Client
         return $this->httpRequest('DELETE', $url, $headers, $data, $this->deleteHttpTimeout);
     }
 
+    private function getTokens() {
+        if ($this->scope === 'user') {
+            return [
+                'access_token' => $_COOKIE['cxf_user_access_token'],
+                'refresh_token' => $_COOKIE['cxf_user_refresh_token']
+            ];
+        } else {
+            return [
+                'access_token' => $_COOKIE['cxf_contact_access_token'],
+                'refresh_token' => $_COOKIE['cxf_contact_refresh_token']
+            ];
+        }
+    }
     private function setHeaders($compatibilityOptions = [], $headers = null)
     {
         $h = [
@@ -229,7 +242,9 @@ class Client
         ];
 
         // Copy local cookies to $h
-        $h = array_merge($h, $_COOKIE);
+        $tokens = $this->getTokens();
+        $h['Access-Token'] = $tokens['access_token'];
+        $h['Refresh-Token'] = $tokens['refresh_token'];
 
         if (empty($compatibilityOptions['no_content_type'])) {
             $h['Content-Type'] = 'application/json';
