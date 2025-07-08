@@ -1,7 +1,7 @@
 {
     "name": "rubengomez/cxf",
     "description": "CXF library allows to connect your Laravel App to CXF 2\n\n",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "type": "library",
     "authors": [
         {
