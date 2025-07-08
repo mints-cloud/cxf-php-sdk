@@ -223,16 +223,18 @@ class Client
 
     private function getTokens() {
         if ($this->scope === 'user') {
+
             return [
-                'access_token' => $_COOKIE['cxf_user_access_token'],
-                'refresh_token' => $_COOKIE['cxf_user_refresh_token']
+                'access_token' => $_COOKIE['cxf_user_access_token'] ?? '',
+                'refresh_token' => $_COOKIE['cxf_user_refresh_token'] ?? ''
             ];
         } else if ($this->scope === 'contact') {
             return [
-                'access_token' => $_COOKIE['cxf_contact_access_token'],
-                'refresh_token' => $_COOKIE['cxf_contact_refresh_token']
+                'access_token' => $_COOKIE['cxf_contact_access_token'] ?? '',
+                'refresh_token' => $_COOKIE['cxf_contact_refresh_token'] ?? ''
             ];
         }
+        return [];
     }
     private function setHeaders($compatibilityOptions = [], $headers = null)
     {
