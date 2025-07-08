@@ -227,7 +227,7 @@ class Client
                 'access_token' => $_COOKIE['cxf_user_access_token'],
                 'refresh_token' => $_COOKIE['cxf_user_refresh_token']
             ];
-        } else {
+        } else if ($this->scope === 'contact') {
             return [
                 'access_token' => $_COOKIE['cxf_contact_access_token'],
                 'refresh_token' => $_COOKIE['cxf_contact_refresh_token']
@@ -243,8 +243,10 @@ class Client
 
         // Copy local cookies to $h
         $tokens = $this->getTokens();
-        $h['Access-Token'] = $tokens['access_token'];
-        $h['Refresh-Token'] = $tokens['refresh_token'];
+        if (isset($tokens['access_token']) && isset($tokens['refresh_token'])) {
+            $h['Access-Token'] = $tokens['access_token'];
+            $h['Refresh-Token'] = $tokens['refresh_token'];
+        }
 
         if (empty($compatibilityOptions['no_content_type'])) {
             $h['Content-Type'] = 'application/json';
