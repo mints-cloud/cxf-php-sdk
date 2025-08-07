@@ -260,6 +260,12 @@ class Client
             $h['Visit-Id'] = $this->visitId;
         }
 
+        if ($compatibilityOptions) {
+            foreach ($compatibilityOptions as $k => $v) {
+                $h[$k] = $v;
+            }
+        }
+
         if ($headers) {
             foreach ($headers as $k => $v) {
                 $h[$k] = $v;
