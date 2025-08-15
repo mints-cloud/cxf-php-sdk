@@ -124,6 +124,19 @@ class ContactClient
         return $this->client->raw('post', '/change-password', null, $this->dataTransform($data), $this->contactV1Url);
     }
 
+    /**
+     * Get Asset Info (Auth is not necessary).
+     * Get a description of an Asset.
+     *
+     * @param string $slug It's the string identifier of the asset.
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getPublicAsset($slug)
+    {
+        return $this->client->raw('get', "public-assets/{$slug}", null, null, '/');
+    }
+
     private function dataTransform($data)
     {
         return CxfHelper::dataTransform($data);

@@ -22,6 +22,7 @@ class Client
     private $postHttpTimeout = 10;
     private $putHttpTimeout = 10;
     private $deleteHttpTimeout = 10;
+    private $isAnImage = false; // Flag to check if the request is an image
 
 
     public function __construct($host, $apiKey, $scope = null, $contactTokenId = null, $visitId = null, $debug = false, $timeouts = [])
@@ -120,6 +121,11 @@ class Client
         }
 
         try {
+            // it is a image response?
+            if ($this->isAnImage) {
+                $this->isAnImage = false;
+                return $response;
+            }
             $decodedResponse = json_decode($response, true);
             if (!$decodedResponse) throw new \Exception($response);
             return $decodedResponse;
@@ -191,6 +197,7 @@ class Client
             // Send the request and store the response in a variable
             $response = $client->request($method, $url, $options);
             // get Headers
+            $this->isAnImage = $this->isImage($response->getHeader('Content-Type'));
             $setCookiesHeader = $response->getHeader('Set-Cookie');
             if ($setCookiesHeader) $this->setCookies($setCookiesHeader);
             // Return the response body as a string
@@ -199,6 +206,16 @@ class Client
             // If an exception is thrown, return the exception message
             return $e->getMessage();
         }
+    }
+
+    // Check in array if content type has something with image
+    public function isImage($contentType): bool {
+        if (is_array($contentType)) {
+            foreach ($contentType as $content) {
+                if (strpos($content, 'image') !== false) return true;
+            }
+        }
+        return false;
     }
 
     public function httpGet($url, $headers = null)
